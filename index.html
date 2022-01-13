@@ -1,9 +1,66 @@
 <!DOCTYPE html>
 <html>
   <head>
+		<script src="vars.js"></script>
+		<script src="work.js"></script>
+		<style>
+#ench-select {
+	width:750px;
+}
+#ench-select table{
+	width:100%;
+	table-layout:fixed;
+}
+
+#ench-select td {
+	text-align:center;
+}
+
+#ench-select tr.g1 {
+	background-color: #bdbdbd;
+}
+
+#ench-select tr.g2 {
+	background-color: #dbdbdb;
+}
+
+#ench-select h3 {
+	text-align:center;
+}
+
+#confirm {
+}
+
+#foot {
+	position:fixed;
+	bottom:0px;
+}
+		</style>
     
   </head>
   <body>
-    <p>test</p>
+    <div id="info">
+		<p>Enchanting items in an anvil can get expensive quickly. This calculator determines the perfect order
+		for any set of enchantments to be applied to an item via books to minimize XP cost and save time.</p>
+	</div>
+	<div id="item-select">
+		<p>
+			<select id="item">
+				<option value="">Which item?</option>
+			</select>
+		</p>
+	</div>
+	<div id="ench-select" style="visibility:hidden">
+		<h3>Enter the level of each enchantment you're using, or leave the field blank.</h3>
+	</div>
+	<div id="confirm" style="visibility:hidden">
+		<button id="button" onclick="calculateOrder()">Calculate</button>
+	</div>
+	<div id="foot">
+		<p>
+			Made by Adsalor, styled after <a href="https://iamcal.github.io/enchant-order/">this</a>. 
+		    Source code <a href="https://github.com/Adsalor/enchant-order-calculator">here</a>.
+		</p>
+	</div>
   </body>
 </html>
