@@ -1,4 +1,5 @@
 window.onload = function(){
+	console.log("Hi");
 	createItemSelection();
 	document.getElementById("item").addEventListener("change", (event) => {
 		clearEnchantmentSelections();
@@ -17,17 +18,13 @@ function createItemSelection(){
 }
 
 function clearEnchantmentSelections(){
-	if (!data.updated) {
-		document.getElementById("item").remove(0);
-		data.updated = true;
-	}
-	document.getElementById("content").innerHTML=
+	document.getElementById("ench-select").innerHTML=
 		"<h3>Enter the level of each enchantment you're using, or leave the field blank.</h3>";
-	document.getElementById("content").style.visibility = "visible";
+	document.getElementById("ench-select").style.visibility = "visible";
 }
 
 function createEnchantmentSelection(index){
-	var div = document.getElementById("content");
+	var div = document.getElementById("ench-select");
 	var group = true;
 	for (var opt of data.sets[index]) {
 		var tab = document.createElement("table");
@@ -55,10 +52,8 @@ function createEnchantmentSelection(index){
 						}
 						subcell.appendChild(level);
 						level.addEventListener("change", (event) => {
+							console.log(event.target.id);
 							resetIncompatibles(event.target.id);
-							if (event.target.value != 0) {
-								document.getElementById("confirm").style.visibility = "visible";
-							}
 						});
 					}
 					cell.appendChild(intab);
@@ -78,15 +73,14 @@ function createEnchantmentSelection(index){
 						level.appendChild(levelOption);
 					}
 					level.addEventListener("change", (event) => {
+						console.log(event.target.id);
 						resetIncompatibles(event.target.id);
-						if (event.target.value != 0) {
-							document.getElementById("confirm").style.visibility = "visible";
-						}
 					});
 					cell.appendChild(level);
 				}
 			}
 		} else {
+			console.log("Adding option " + opt);
 			var cell = row.insertCell(0);
 			cell.innerHTML = opt + ": ";
 			var level = document.createElement("select");
@@ -102,10 +96,8 @@ function createEnchantmentSelection(index){
 				level.appendChild(levelOption);
 			}
 			level.addEventListener("change", (event) => {
+				console.log(event.target.id);
 				resetIncompatibles(event.target.id);
-				if (event.target.value != 0) {
-					document.getElementById("confirm").style.visibility = "visible";
-				}
 			});
 			cell.appendChild(level);
 		}
@@ -123,6 +115,7 @@ function resetIncompatibles(enchant){
 	console.log(enchant);
 	for (var incomp of data.enchants[enchant].incompatible) {
 		var tmp = document.getElementById(incomp);
+		console.log("Incompatible with " + enchant + ": " + incomp);
 		if (tmp != null) {
 			tmp.value = "";
 		}
@@ -130,58 +123,16 @@ function resetIncompatibles(enchant){
 }
 
 function createList(){
-	var enchants = [];
+	var enchants = {};
 	for (var dropdown of document.getElementsByTagName("select")) {
 		if (dropdown.value != "" && dropdown.id != "item") {
-			enchants.push([dropdown.id,dropdown.value]);
+			enchants[dropdown.id] = dropdown.value;
 		}
 	}
 	return enchants;
 }
 
-function enchVal(e) {
-	return data.enchants[e[0]].item * e[1];
-}
-
-function enchCompare(l,r) {
-	return enchVal(r) - enchVal(l);
-}
-
-function getIconData(item) {
-	if (item[1] == 0) {
-		return "<img src=\"./images/" + data.images[item[0]] + "\" title=\"" + item[0] + "\"/>";
-	} else {
-		return "<img src=\"./images/enchanted_book.gif\" title=\"" + item[0] + "\"/>";
-	}
-}
-
 function calculateOrder(){
 	var enchants = createList();
-	enchants.sort(enchCompare);
 	console.log(enchants);
-	var ordered = [[document.getElementById("item").options[document.getElementById("item").selectedIndex].outerText,0]];
-	for (let i = 0; i < enchants.length; i++) {
-		ordered.push(enchants[data.orders[enchants.length - 1][i]])
-	}
-	console.log(ordered);
-	var output = document.getElementById("content");
-	output.innerHTML=
-		"<h3>Combination Order:</h3>";
-	document.getElementById("item-select").style.visibility = "hidden";
-	document.getElementById("confirm").style.visibility = "hidden";
-	var width = 1;
-	var currentIndex = 0;
-	var stepNum = 1;
-	while (width < ordered.length) {
-		if (currentIndex+width >= ordered.length) {
-			width *= 2;
-			currentIndex = 0;
-		} else {
-			output.innerHTML += "<h4> " + stepNum + ". Combine: " + 
-				getIconData(ordered[currentIndex]) + " + " + 
-				getIconData(ordered[currentIndex + width]) + "<\h4>";
-			currentIndex += 2*width;
-			stepNum++;
-		}
-	}
 }
