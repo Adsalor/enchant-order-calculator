@@ -149,9 +149,9 @@ function enchCompare(l,r) {
 
 function getIconData(item) {
 	if (item[1] == 0) {
-		return "<img src=\"./images/" + data.images[item[0]] + "\" title=\"" + item[0] + "\"/>" + " " + item[0];
+		return "<img src=\"./images/" + data.images[item[0]] + "\" title=\"" + item[0] + "\"/>" + " (" + item[0] + ")";
 	} else {
-		return "<img src=\"./images/enchanted_book.gif\" title=\"" + item[0] + "\"/>" + " " + item[0];
+		return "<img src=\"./images/enchanted_book.gif\" title=\"" + item[0] + "\"/>" + " (" + item[0] + ")";
 	}
 }
 
